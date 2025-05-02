@@ -32,7 +32,9 @@ export const loginUser = createAsyncThunk(
         return rejectWithValue(response);
       }
       setCookie('accessToken', response.accessToken);
+      setCookie('refteshToken', response.refreshToken);
       localStorage.setItem('accessToken', response.accessToken);
+      localStorage.setItem('refreshToken', response.refreshToken);
       return response.user;
     } catch (err) {
       return rejectWithValue('Неверный email или пароль');
@@ -72,27 +74,18 @@ export const updateUser = createAsyncThunk(
   }
 );
 
-export const logoutUser = createAsyncThunk(
-  'user/logoutUser',
-  async (_, { rejectWithValue }) => {
-    try {
-      const response = await logoutApi();
-      if (!response.success) {
-        return rejectWithValue(response);
-      }
-      deleteCookie('accessToken');
-      localStorage.clear();
-      return response;
-    } catch (err) {
-      return rejectWithValue('Ошибка выхода');
-    }
-  }
-);
+export const logoutUser = createAsyncThunk('user/logoutUser', async () => {
+  const response = await logoutApi();
+  deleteCookie('accessToken');
+  deleteCookie('refreshToken');
+  localStorage.clear();
+  return response;
+});
 
 export const checkAuth = createAsyncThunk(
   'user/checkAuth',
   async (_, { dispatch }) => {
-    if (getCookie('authToken')) {
+    if (getCookie('refreshToken')) {
       getUserApi()
         .then((res) => dispatch(setUser(res.user)))
         .finally(() => dispatch(setIsAuthChecked(true)));

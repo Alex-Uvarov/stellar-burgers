@@ -20,7 +20,7 @@ import {
   useMatch,
   useNavigate
 } from 'react-router-dom';
-import { OnlyAuth, OnlyUnAuth } from '../protected-route';
+import { ProtectedRoute } from '../protected-route';
 import { useDispatch, useSelector } from '../../../src/services/store';
 import {
   fetchIngredients,
@@ -52,51 +52,88 @@ const App: FC = () => {
         <Route path='/feed' element={<Feed />} />
         <Route path='*' element={<NotFound404 />} />
         <Route
-          path='/login'
+          path='/ingredients/:id'
           element={
-            <OnlyUnAuth>
-              <Login />
-            </OnlyUnAuth>
+            <div className={styles.detailPageWrap}>
+              <p
+                className={`text text_type_digits-default ${styles.detailHeader}`}
+              >
+                Детали ингредиента
+              </p>
+              <IngredientDetails />
+            </div>
           }
+        />
+        <Route
+          path='/profile/orders/:number'
+          element={
+            <ProtectedRoute>
+              <div className={styles.detailPageWrap}>
+                <p
+                  className={`text text_type_digits-default ${styles.detailHeader}`}
+                >
+                  #{orderNumber}
+                </p>
+                <OrderInfo />
+              </div>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/feed/:number'
+          element={
+            <div className={styles.detailPageWrap}>
+              <p
+                className={`text text_type_digits-default ${styles.detailHeader}`}
+              >
+                #{orderNumber}
+              </p>
+              <OrderInfo />
+            </div>
+          }
+        />
+        <Route
+          path='/login'
+          element={<ProtectedRoute onlyUnAuth children={<Login />} />}
         />
         <Route
           path='/register'
           element={
-            <OnlyUnAuth>
+            <ProtectedRoute onlyUnAuth>
               <Register />
-            </OnlyUnAuth>
+            </ProtectedRoute>
           }
         />
         <Route
           path='/forgot-password'
           element={
-            <OnlyUnAuth>
+            <ProtectedRoute onlyUnAuth>
               <ForgotPassword />
-            </OnlyUnAuth>
+            </ProtectedRoute>
           }
         />
         <Route
           path='/reset-password'
           element={
-            <OnlyUnAuth>
+            <ProtectedRoute onlyUnAuth>
               <ResetPassword />
-            </OnlyUnAuth>
+            </ProtectedRoute>
           }
         />
         <Route
           path='/profile'
           element={
-            <OnlyAuth>
+            <ProtectedRoute>
               <Profile />
-            </OnlyAuth>
+            </ProtectedRoute>
           }
         />
         <Route
           path='/profile/orders'
           element={
-            <OnlyAuth>
+            <ProtectedRoute>
               <ProfileOrders />
-            </OnlyAuth>
+            </ProtectedRoute>
           }
         />
       </Routes>
@@ -106,7 +143,7 @@ const App: FC = () => {
             path='/feed/:number'
             element={
               <Modal
-                title=''
+                title={`#${orderNumber}`}
                 onClose={() => {
                   navigate(-1);
                 }}
@@ -119,7 +156,7 @@ const App: FC = () => {
             path='/ingredients/:id'
             element={
               <Modal
-                title=''
+                title='Детали ингредиента'
                 onClose={() => {
                   navigate(-1);
                 }}
@@ -131,16 +168,16 @@ const App: FC = () => {
           <Route
             path='/profile/orders/:number'
             element={
-              <OnlyAuth>
+              <ProtectedRoute>
                 <Modal
-                  title=''
+                  title={`#${orderNumber}`}
                   onClose={() => {
-                    navigate(-1);
+                    navigate('/profile/orders');
                   }}
                 >
                   <OrderInfo />
                 </Modal>
-              </OnlyAuth>
+              </ProtectedRoute>
             }
           />
         </Routes>

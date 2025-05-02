@@ -40,12 +40,13 @@ export const BurgerConstructor: FC = () => {
         ...constructorItems.ingredients.map((item) => item._id),
         constructorItems.bun._id
       ];
-      dispatch(sendOrder(order));
+      dispatch(sendOrder(order)).finally(() =>
+        dispatch(burgerConstructorSlice.actions.clearConstructor())
+      );
     }
   };
 
   const closeOrderModal = () => {
-    dispatch(burgerConstructorSlice.actions.clearConstructor());
     dispatch(orderCreateSlice.actions.clearOrder());
   };
 

@@ -7,11 +7,11 @@ import {
 import { useSelector } from '../../../src/services/store';
 
 type ProtectedRouteProps = {
-  children: React.ReactElement;
+  children: JSX.Element;
   onlyUnAuth?: boolean;
 };
 
-const ProtectedRoute = ({
+export const ProtectedRoute = ({
   children,
   onlyUnAuth = false
 }: ProtectedRouteProps) => {
@@ -35,21 +35,9 @@ const ProtectedRoute = ({
   }
 
   if (onlyUnAuth && user) {
-    const from = location.state?.from || { pathname: '/' };
-    return (
-      <Navigate
-        to={from}
-        state={{
-          from: { location }
-        }}
-      />
-    );
+    const { from } = location.state ?? { from: { pathname: '/' } };
+    return <Navigate to={from} />;
   }
 
   return children;
 };
-
-export const OnlyAuth = ProtectedRoute;
-export const OnlyUnAuth = ({ children }: { children: React.ReactElement }) => (
-  <ProtectedRoute onlyUnAuth children={children} />
-);
