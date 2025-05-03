@@ -32,7 +32,7 @@ export const loginUser = createAsyncThunk(
         return rejectWithValue(response);
       }
       setCookie('accessToken', response.accessToken);
-      setCookie('refteshToken', response.refreshToken);
+      setCookie('refreshToken', response.refreshToken);
       localStorage.setItem('accessToken', response.accessToken);
       localStorage.setItem('refreshToken', response.refreshToken);
       return response.user;
