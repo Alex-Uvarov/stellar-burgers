@@ -1,15 +1,15 @@
-import { getOrderByNumberApi, orderBurgerApi } from '@api';
+import { getOrderByNumberApi, orderBurgerApi } from '../../utils/burger-api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TOrder } from '@utils-types';
 
-type TOrderState = {
+export type TOrderState = {
   order: TOrder | null;
   orderByNumber: TOrder | null;
   loading: boolean;
   error: string | null;
 };
 
-const initialState: TOrderState = {
+export const initialState: TOrderState = {
   order: null,
   orderByNumber: null,
   loading: false,
@@ -35,6 +35,7 @@ export const orderCreateSlice = createSlice({
   reducers: {
     clearOrder: (state) => {
       state.order = null;
+      state.orderByNumber = null;
     }
   },
   extraReducers: (builder) => {
@@ -76,6 +77,7 @@ export const orderCreateSlice = createSlice({
 });
 
 export const orderReducer = orderCreateSlice.reducer;
+export const clearOrder = orderCreateSlice.actions.clearOrder;
 export const {
   getOrderSelector,
   getLoadingStateSelector,
