@@ -1,14 +1,14 @@
-import { getOrdersApi } from '@api';
+import { getOrdersApi } from '../../utils/burger-api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TOrder } from '@utils-types';
 
-type TProfileOrderState = {
+export type TProfileOrderState = {
   orders: TOrder[];
   loading: boolean;
   error: null | string | undefined;
 };
 
-const initialState: TProfileOrderState = {
+export const profileOrderInitialState: TProfileOrderState = {
   orders: [],
   loading: false,
   error: null
@@ -21,7 +21,7 @@ export const getProfileOrders = createAsyncThunk(
 
 export const profileOrdersSlice = createSlice({
   name: 'profileOrders',
-  initialState,
+  initialState: profileOrderInitialState,
   reducers: {},
   extraReducers: (builder) => {
     builder

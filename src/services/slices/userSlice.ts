@@ -6,21 +6,23 @@ import {
   TLoginData,
   TRegisterData,
   updateUserApi
-} from '@api';
+} from '../../utils/burger-api';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TUser } from '@utils-types';
 import { deleteCookie, getCookie, setCookie } from '../../../src/utils/cookie';
 
-type TUserState = {
+export type TUserState = {
   user: TUser | null;
   isAuthChecked: boolean;
   error: null | string;
+  loading: boolean;
 };
 
-const initialState: TUserState = {
+export const userInitialState: TUserState = {
   user: null,
   isAuthChecked: false,
-  error: null
+  error: null,
+  loading: false
 };
 
 export const loginUser = createAsyncThunk(
@@ -97,7 +99,7 @@ export const checkAuth = createAsyncThunk(
 
 export const userSlice = createSlice({
   name: 'user',
-  initialState,
+  initialState: userInitialState,
   reducers: {
     setIsAuthChecked: (state, action: PayloadAction<boolean>) => {
       state.isAuthChecked = action.payload;
@@ -110,46 +112,59 @@ export const userSlice = createSlice({
     builder
       .addCase(loginUser.pending, (state) => {
         state.error = null;
+        state.loading = true;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.error = action.payload as string;
+        state.loading = false;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.user = action.payload;
         state.error = null;
+        state.loading = false;
         state.isAuthChecked = true;
       })
       .addCase(registerUser.pending, (state) => {
         state.error = null;
+        state.loading = true;
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.error = action.payload as string;
+        state.loading = false;
       })
       .addCase(registerUser.fulfilled, (state, action) => {
         state.user = action.payload;
         state.error = null;
+        state.loading = false;
         state.isAuthChecked = true;
       })
       .addCase(updateUser.pending, (state) => {
         state.error = null;
+        state.loading = true;
       })
       .addCase(updateUser.rejected, (state, action) => {
         state.error = action.payload as string;
+        state.loading = false;
       })
       .addCase(updateUser.fulfilled, (state, action) => {
         state.user = action.payload;
         state.error = null;
+        state.loading = false;
         state.isAuthChecked = true;
       })
       .addCase(logoutUser.pending, (state) => {
         state.error = null;
+        state.loading = true;
       })
       .addCase(logoutUser.rejected, (state, action) => {
         state.error = action.payload as string;
+        state.loading = false;
       })
       .addCase(logoutUser.fulfilled, (state) => {
         state.user = null;
         state.error = null;
+        state.loading = false;
+        state.isAuthChecked = false;
       });
   },
   selectors: {

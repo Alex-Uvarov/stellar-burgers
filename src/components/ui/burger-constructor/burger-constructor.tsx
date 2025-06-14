@@ -20,7 +20,10 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
 }) => (
   <section className={styles.burger_constructor}>
     {constructorItems.bun ? (
-      <div className={`${styles.element} mb-4 mr-4`}>
+      <div
+        className={`${styles.element} mb-4 mr-4`}
+        data-cy='constructor-bun-top'
+      >
         <ConstructorElement
           type='top'
           isLocked
@@ -31,12 +34,13 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
       </div>
     ) : (
       <div
+        data-cy='constructor-bun-top'
         className={`${styles.noBuns} ${styles.noBunsTop} ml-8 mb-4 mr-5 text text_type_main-default`}
       >
         Выберите булки
       </div>
     )}
-    <ul className={styles.elements}>
+    <ul className={styles.elements} data-cy='constructor-ingredient'>
       {constructorItems.ingredients.length > 0 ? (
         constructorItems.ingredients.map(
           (item: TConstructorIngredient, index: number) => (
@@ -51,13 +55,17 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
       ) : (
         <div
           className={`${styles.noBuns} ml-8 mb-4 mr-5 text text_type_main-default`}
+          data-cy='constructor-ingredient'
         >
           Выберите начинку
         </div>
       )}
     </ul>
     {constructorItems.bun ? (
-      <div className={`${styles.element} mt-4 mr-4`}>
+      <div
+        className={`${styles.element} mt-4 mr-4`}
+        data-cy='constructor-bun-bottom'
+      >
         <ConstructorElement
           type='bottom'
           isLocked
@@ -69,6 +77,7 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
     ) : (
       <div
         className={`${styles.noBuns} ${styles.noBunsBottom} ml-8 mb-4 mr-5 text text_type_main-default`}
+        data-cy='constructor-bun-bottom'
       >
         Выберите булки
       </div>
@@ -79,6 +88,7 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
         <CurrencyIcon type='primary' />
       </div>
       <Button
+        data-cy='order-button'
         htmlType='button'
         type='primary'
         size='large'
@@ -88,7 +98,11 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
     </div>
 
     {orderRequest && (
-      <Modal onClose={closeOrderModal} title={'Оформляем заказ...'}>
+      <Modal
+        onClose={closeOrderModal}
+        title={'Оформляем заказ...'}
+        data-cy='order-loading-modal'
+      >
         <Preloader />
       </Modal>
     )}

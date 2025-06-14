@@ -1,12 +1,12 @@
 import { createSlice, nanoid, PayloadAction } from '@reduxjs/toolkit';
 import { TConstructorIngredient, TIngredient } from '@utils-types';
 
-type TBurgerConstructorState = {
+export type TBurgerConstructorState = {
   bun: TConstructorIngredient | null;
   ingredients: TConstructorIngredient[];
 };
 
-const initialState: TBurgerConstructorState = {
+export const burgerConstructorInitialState: TBurgerConstructorState = {
   bun: null,
   ingredients: []
 };
@@ -15,7 +15,7 @@ export type IngredientWithId = TIngredient & { id: string };
 
 export const burgerConstructorSlice = createSlice({
   name: 'burgerConstructor',
-  initialState,
+  initialState: burgerConstructorInitialState,
   reducers: {
     addIngredient: {
       reducer: (state, action: PayloadAction<TConstructorIngredient>) => {
@@ -35,25 +35,19 @@ export const burgerConstructorSlice = createSlice({
     deleteIngredient: (state, action: PayloadAction<number>) => {
       state.ingredients.splice(action.payload, 1);
     },
-    moveIngredientUp: (state, action: PayloadAction<string>) => {
-      const current = state.ingredients.findIndex(
-        (item) => item.id === action.payload
-      );
-      if (current > 0) {
-        const next = state.ingredients[current];
-        state.ingredients[current] = state.ingredients[current - 1];
-        state.ingredients[current - 1] = next;
-      }
+    moveIngredientUp: (state, action: PayloadAction<number>) => {
+      const index = action.payload;
+      [state.ingredients[index - 1], state.ingredients[index]] = [
+        state.ingredients[index],
+        state.ingredients[index - 1]
+      ];
     },
-    moveIngredientDown: (state, action: PayloadAction<string>) => {
-      const current = state.ingredients.findIndex(
-        (item) => item.id === action.payload
-      );
-      if (current !== -1 && current < state.ingredients.length - 1) {
-        const next = state.ingredients[current];
-        state.ingredients[current] = state.ingredients[current + 1];
-        state.ingredients[current + 1] = next;
-      }
+    moveIngredientDown: (state, action: PayloadAction<number>) => {
+      const index = action.payload;
+      [state.ingredients[index], state.ingredients[index + 1]] = [
+        state.ingredients[index + 1],
+        state.ingredients[index]
+      ];
     },
     clearConstructor: (state) => {
       state.bun = null;
@@ -67,6 +61,13 @@ export const burgerConstructorSlice = createSlice({
 });
 
 export const burgerConstructorSliceReducer = burgerConstructorSlice.reducer;
+export const {
+  addIngredient,
+  deleteIngredient,
+  moveIngredientUp,
+  moveIngredientDown,
+  clearConstructor
+} = burgerConstructorSlice.actions;
 export const { getBurgerIngredients, getBun } =
   burgerConstructorSlice.selectors;
 export default burgerConstructorSlice;
