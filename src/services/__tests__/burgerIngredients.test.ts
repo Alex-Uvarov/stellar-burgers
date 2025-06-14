@@ -3,7 +3,7 @@ import {
   getIngredientsSelector,
   getLoadingSelector,
   ingredientsSliceReducer,
-  initialState,
+  burgerIngredientsInitialState,
   TIngredientsState
 } from '../slices/burgerIngredientsSlice';
 
@@ -56,13 +56,13 @@ const mockIngredients: TIngredientsState = {
 describe('Ингредиенты', () => {
   it('Начальное состояние', () => {
     const state = ingredientsSliceReducer(undefined, { type: '' });
-    expect(state).toEqual(initialState);
+    expect(state).toEqual(burgerIngredientsInitialState);
   });
 
   describe('Работа с сервером', () => {
     it('Pending', () => {
       const result = ingredientsSliceReducer(
-        initialState,
+        burgerIngredientsInitialState,
         fetchIngredients.pending('', undefined)
       );
       expect(result.loading).toBe(true);
@@ -70,7 +70,7 @@ describe('Ингредиенты', () => {
     });
     it('Fulfilled', () => {
       const result = ingredientsSliceReducer(
-        initialState,
+        burgerIngredientsInitialState,
         fetchIngredients.fulfilled(mockIngredients.ingredients, '')
       );
       expect(result.loading).toBe(false);
@@ -79,7 +79,7 @@ describe('Ингредиенты', () => {
     });
     it('rejected', () => {
       const result = ingredientsSliceReducer(
-        initialState,
+        burgerIngredientsInitialState,
         fetchIngredients.rejected(new Error('Err'), '')
       );
       expect(result.loading).toBe(false);

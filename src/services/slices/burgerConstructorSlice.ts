@@ -6,7 +6,7 @@ export type TBurgerConstructorState = {
   ingredients: TConstructorIngredient[];
 };
 
-export const initialState: TBurgerConstructorState = {
+export const burgerConstructorInitialState: TBurgerConstructorState = {
   bun: null,
   ingredients: []
 };
@@ -15,7 +15,7 @@ export type IngredientWithId = TIngredient & { id: string };
 
 export const burgerConstructorSlice = createSlice({
   name: 'burgerConstructor',
-  initialState,
+  initialState: burgerConstructorInitialState,
   reducers: {
     addIngredient: {
       reducer: (state, action: PayloadAction<TConstructorIngredient>) => {

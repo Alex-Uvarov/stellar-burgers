@@ -1,3 +1,9 @@
+import { burgerConstructorInitialState } from '../slices/burgerConstructorSlice';
+import { burgerIngredientsInitialState } from '../slices/burgerIngredientsSlice';
+import { feedInitialState } from '../slices/feedSlice';
+import { orderInitialState } from '../slices/orderCreateSlice';
+import { profileOrderInitialState } from '../slices/profileOrderSlice';
+import { userInitialState } from '../slices/userSlice';
 import { rootReducer } from '../store';
 import { configureStore } from '@reduxjs/toolkit';
 
@@ -8,24 +14,26 @@ describe('Проверка rootReducer', () => {
 
     const newState = rootReducer(initialState, action);
 
-    expect(newState).toHaveProperty('user');
-    expect(newState).toHaveProperty('burgerConstructor');
-    expect(newState).toHaveProperty('ingredients');
-    expect(newState).toHaveProperty('profileOrders');
-    expect(newState).toHaveProperty('order');
-    expect(newState).toHaveProperty('feed');
+    expect(newState.user).toStrictEqual(userInitialState);
+    expect(newState.burgerConstructor).toStrictEqual(
+      burgerConstructorInitialState
+    );
+    expect(newState.ingredients).toStrictEqual(burgerIngredientsInitialState);
+    expect(newState.profileOrders).toStrictEqual(profileOrderInitialState);
+    expect(newState.order).toStrictEqual(orderInitialState);
+    expect(newState.feed).toStrictEqual(feedInitialState);
   });
 
   it('Создание стора', () => {
     const store = configureStore({ reducer: rootReducer });
 
     const expectedInitialState = {
-      user: { user: null, isAuthChecked: false, error: null, loading: false },
-      burgerConstructor: { bun: null, ingredients: [] },
-      ingredients: { ingredients: [], loading: false, error: null },
-      profileOrders: { orders: [], loading: false, error: null },
-      order: { order: null, orderByNumber: null, loading: false, error: null },
-      feed: { orders: [], total: 0, totalToday: 0, loading: false, error: null }
+      user: userInitialState,
+      burgerConstructor: burgerConstructorInitialState,
+      ingredients: burgerIngredientsInitialState,
+      profileOrders: profileOrderInitialState,
+      order: orderInitialState,
+      feed: feedInitialState
     };
 
     expect(store.getState()).toEqual(expectedInitialState);

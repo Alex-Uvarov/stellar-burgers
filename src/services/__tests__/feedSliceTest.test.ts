@@ -6,7 +6,7 @@ import {
   getOrdersSelector,
   getTotalSelector,
   getTotalToday,
-  initialState,
+  feedInitialState,
   TFeedState
 } from '../slices/feedSlice';
 
@@ -35,13 +35,13 @@ const mockFeed: TFeedState = {
 describe('Feed', () => {
   it('Начальное состояние', () => {
     const state = feedReducer(undefined, { type: '' });
-    expect(state).toEqual(initialState);
+    expect(state).toEqual(feedInitialState);
   });
 
   describe('Работа с сервером', () => {
     it('Pending', () => {
       const result = feedReducer(
-        initialState,
+        feedInitialState,
         fetchFeed.pending('', undefined)
       );
       expect(result.loading).toBe(true);
@@ -49,7 +49,7 @@ describe('Feed', () => {
     });
     it('Fulfilled', () => {
       const result = feedReducer(
-        initialState,
+        feedInitialState,
         fetchFeed.fulfilled(
           {
             orders: mockFeed.orders,
@@ -68,7 +68,7 @@ describe('Feed', () => {
     });
     it('Rejected', () => {
       const result = feedReducer(
-        initialState,
+        feedInitialState,
         fetchFeed.rejected(new Error('Err'), '')
       );
       expect(result.loading).toBe(false);

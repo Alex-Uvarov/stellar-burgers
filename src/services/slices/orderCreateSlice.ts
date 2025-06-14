@@ -9,7 +9,7 @@ export type TOrderState = {
   error: string | null;
 };
 
-export const initialState: TOrderState = {
+export const orderInitialState: TOrderState = {
   order: null,
   orderByNumber: null,
   loading: false,
@@ -31,7 +31,7 @@ export const getOrderByNumber = createAsyncThunk(
 
 export const orderCreateSlice = createSlice({
   name: 'order',
-  initialState,
+  initialState: orderInitialState,
   reducers: {
     clearOrder: (state) => {
       state.order = null;

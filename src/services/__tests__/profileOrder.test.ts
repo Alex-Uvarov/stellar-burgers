@@ -2,7 +2,7 @@ import {
   getLoadingSelector,
   getProfileOrders,
   getProfileOrdersSelector,
-  initialState,
+  profileOrderInitialState,
   profileOrdersSliceReducer
 } from '../slices/profileOrderSlice';
 
@@ -29,13 +29,13 @@ const mockProfileOrdersData = {
 describe('Заказ в профиле', () => {
   it('Начальное состояние', () => {
     const state = profileOrdersSliceReducer(undefined, { type: '' });
-    expect(state).toBe(initialState);
+    expect(state).toBe(profileOrderInitialState);
   });
 
   describe('Сервер', () => {
     it('getProfileOrders Pending', () => {
       const result = profileOrdersSliceReducer(
-        initialState,
+        profileOrderInitialState,
         getProfileOrders.pending('requestId')
       );
       expect(result.loading).toBe(true);
@@ -43,7 +43,7 @@ describe('Заказ в профиле', () => {
     });
     it('getProfileOrders fulfilled', () => {
       const result = profileOrdersSliceReducer(
-        initialState,
+        profileOrderInitialState,
         getProfileOrders.fulfilled(mockProfileOrdersData.orders, 'requestId')
       );
       expect(result.orders).toStrictEqual(mockProfileOrdersData.orders);
@@ -52,7 +52,7 @@ describe('Заказ в профиле', () => {
     });
     it('getProfileOrders Rejected', () => {
       const result = profileOrdersSliceReducer(
-        initialState,
+        profileOrderInitialState,
         getProfileOrders.rejected(new Error('Err'), 'requestId')
       );
       expect(result.loading).toBe(false);

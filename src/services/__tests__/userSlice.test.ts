@@ -2,7 +2,7 @@ import {
   getErrorSelector,
   getIsAuthCheckedSelector,
   getUserSelector,
-  initialState,
+  userInitialState,
   loginUser,
   logoutUser,
   registerUser,
@@ -31,7 +31,7 @@ const registerData = {
 describe('Пользователь', () => {
   it('Начальное состояние', () => {
     const state = userSliceReducer(undefined, { type: '' });
-    expect(state).toEqual(initialState);
+    expect(state).toEqual(userInitialState);
   });
 
   describe('Редюсеры', () => {
@@ -44,7 +44,7 @@ describe('Пользователь', () => {
       expect(newState.isAuthChecked).toBe(!state.isAuthChecked);
     });
     it('setUser', () => {
-      const state = initialState;
+      const state = userInitialState;
       const newState = userSliceReducer(state, setUser(mockUserData.user));
       expect(newState.user).toStrictEqual(mockUserData.user);
     });
@@ -54,7 +54,7 @@ describe('Пользователь', () => {
     describe('Login user', () => {
       it('Login User Pending', () => {
         const result = userSliceReducer(
-          initialState,
+          userInitialState,
           loginUser.pending('requestID', {
             email: mockUserData.user.email,
             password: '123'
@@ -65,7 +65,7 @@ describe('Пользователь', () => {
         expect(result.isAuthChecked).toBe(false);
       });
       it('LoginUser Rejected', () => {
-        const result = userSliceReducer(initialState, {
+        const result = userSliceReducer(userInitialState, {
           type: loginUser.rejected.type,
           payload: 'Неверный email или пароль'
         });
@@ -74,7 +74,7 @@ describe('Пользователь', () => {
         expect(result.isAuthChecked).toBe(false);
       });
       it('Login User Fulfilled', () => {
-        const result = userSliceReducer(initialState, {
+        const result = userSliceReducer(userInitialState, {
           type: loginUser.fulfilled.type,
           payload: mockUserData
         });
@@ -88,7 +88,7 @@ describe('Пользователь', () => {
     describe('Register User', () => {
       it('Register User pending', () => {
         const result = userSliceReducer(
-          initialState,
+          userInitialState,
           registerUser.pending('requestId', registerData)
         );
         expect(result.loading).toBe(true);
@@ -96,7 +96,7 @@ describe('Пользователь', () => {
         expect(result.isAuthChecked).toBe(false);
       });
       it('Register User Rejected', () => {
-        const result = userSliceReducer(initialState, {
+        const result = userSliceReducer(userInitialState, {
           type: registerUser.rejected.type,
           payload: 'Ошибка регистрации'
         });
@@ -106,7 +106,7 @@ describe('Пользователь', () => {
       });
       it('Register User Fulfilled', () => {
         const result = userSliceReducer(
-          initialState,
+          userInitialState,
           registerUser.fulfilled(mockUserData.user, 'requestId', registerData)
         );
         expect(result.error).toBeNull();
@@ -119,14 +119,14 @@ describe('Пользователь', () => {
     describe('Update User', () => {
       it('Update User Pending', () => {
         const result = userSliceReducer(
-          initialState,
+          userInitialState,
           updateUser.pending('request', registerData)
         );
         expect(result.loading).toBe(true);
         expect(result.error).toBeNull();
       });
       it('Update User Rejected', () => {
-        const result = userSliceReducer(initialState, {
+        const result = userSliceReducer(userInitialState, {
           type: updateUser.rejected.type,
           payload: 'Ошибка обновления пользователя'
         });
@@ -135,7 +135,7 @@ describe('Пользователь', () => {
       });
       it('Update User Fulfilled', () => {
         const result = userSliceReducer(
-          initialState,
+          userInitialState,
           updateUser.fulfilled(mockUserData.user, 'requestId', registerData)
         );
         expect(result.loading).toBe(false);
@@ -148,14 +148,14 @@ describe('Пользователь', () => {
     describe('Logout User', () => {
       it('Logout User Pending', () => {
         const result = userSliceReducer(
-          initialState,
+          userInitialState,
           logoutUser.pending('requestId')
         );
         expect(result.loading).toBe(true);
         expect(result.error).toBeNull();
       });
       it('Logout User Rejected', () => {
-        const result = userSliceReducer(initialState, {
+        const result = userSliceReducer(userInitialState, {
           type: logoutUser.rejected.type,
           payload: 'Ошибка выхода'
         });
@@ -170,7 +170,7 @@ describe('Пользователь', () => {
         expect(result.error).toBeNull();
         expect(result.loading).toBe(false);
         expect(result.isAuthChecked).toBe(false);
-        expect(result.user).toStrictEqual(initialState.user);
+        expect(result.user).toStrictEqual(userInitialState.user);
       });
     });
   });

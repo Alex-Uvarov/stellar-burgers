@@ -5,7 +5,7 @@ import {
   deleteIngredient,
   getBun,
   getBurgerIngredients,
-  initialState,
+  burgerConstructorInitialState,
   moveIngredientDown,
   moveIngredientUp,
   TBurgerConstructorState
@@ -80,13 +80,13 @@ const burger: TBurgerConstructorState = {
 describe('Конструктор', () => {
   it('Начальное состояние', () => {
     const state = burgerConstructorSliceReducer(undefined, { type: '' });
-    expect(state).toEqual(initialState);
+    expect(state).toEqual(burgerConstructorInitialState);
   });
 
   describe('Добавление ингредиентов', () => {
     it('Добавление булки', () => {
       const state = burgerConstructorSliceReducer(
-        initialState,
+        burgerConstructorInitialState,
         addIngredient(mockBunA)
       );
       expect(state.bun?._id).toEqual(mockBunA._id);
@@ -103,7 +103,7 @@ describe('Конструктор', () => {
     });
     it('Добавление ингредиента в пустой конструктор', () => {
       const state = burgerConstructorSliceReducer(
-        initialState,
+        burgerConstructorInitialState,
         addIngredient(mockIngredientB)
       );
       expect(state.ingredients.length).toEqual(1);
@@ -169,7 +169,7 @@ describe('Конструктор', () => {
       const newState = burgerConstructorSliceReducer(state, clearConstructor());
 
       expect(newState).not.toEqual(state);
-      expect(newState).toEqual(initialState);
+      expect(newState).toEqual(burgerConstructorInitialState);
     });
   });
 

@@ -5,7 +5,7 @@ import {
   getOrderByNumber,
   getOrderByNumberSelector,
   getOrderSelector,
-  initialState,
+  orderInitialState,
   orderReducer,
   sendOrder
 } from '../slices/orderCreateSlice';
@@ -44,21 +44,21 @@ const mockOrderData = {
 describe('Заказ', () => {
   it('Начальное состояние', () => {
     const state = orderReducer(undefined, { type: '' });
-    expect(state).toEqual(initialState);
+    expect(state).toEqual(orderInitialState);
   });
 
   describe('Редюсеры', () => {
     it('Очистка заказа', () => {
       const state = mockOrderData;
       const newState = orderReducer(state, clearOrder());
-      expect(newState).toStrictEqual(initialState);
+      expect(newState).toStrictEqual(orderInitialState);
     });
   });
 
   describe('Сервер', () => {
     it('Отправка заказа pending', () => {
       const result = orderReducer(
-        initialState,
+        orderInitialState,
         sendOrder.pending('RequestId', mockOrderData.order.ingredients)
       );
       expect(result.loading).toBe(true);
@@ -66,7 +66,7 @@ describe('Заказ', () => {
     });
     it('Заказ отправлен fulfilled', () => {
       const result = orderReducer(
-        initialState,
+        orderInitialState,
         sendOrder.fulfilled(
           {
             order: mockOrderData.order,
@@ -83,7 +83,7 @@ describe('Заказ', () => {
     });
     it('Ошибка отправки заказа', () => {
       const result = orderReducer(
-        initialState,
+        orderInitialState,
         sendOrder.rejected(
           new Error('Err'),
           'requestId',
@@ -101,7 +101,7 @@ describe('Заказ', () => {
     });
     it('Получение заказа по номеру pending', () => {
       const result = orderReducer(
-        initialState,
+        orderInitialState,
         getOrderByNumber.pending('requestId', mockOrderData.order.number)
       );
       expect(result.loading).toBe(true);
@@ -109,7 +109,7 @@ describe('Заказ', () => {
     });
     it('Получение заказа по номеру fulfilled', () => {
       const result = orderReducer(
-        initialState,
+        orderInitialState,
         getOrderByNumber.fulfilled(
           { orders: [mockOrderData.order], success: true },
           'requestId',
@@ -122,7 +122,7 @@ describe('Заказ', () => {
     });
     it('Получение заказа по номеру rejected', () => {
       const result = orderReducer(
-        initialState,
+        orderInitialState,
         getOrderByNumber.rejected(
           new Error('Err'),
           'requestID',

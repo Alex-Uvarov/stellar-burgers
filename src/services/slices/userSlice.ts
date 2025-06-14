@@ -18,7 +18,7 @@ export type TUserState = {
   loading: boolean;
 };
 
-export const initialState: TUserState = {
+export const userInitialState: TUserState = {
   user: null,
   isAuthChecked: false,
   error: null,
@@ -99,7 +99,7 @@ export const checkAuth = createAsyncThunk(
 
 export const userSlice = createSlice({
   name: 'user',
-  initialState,
+  initialState: userInitialState,
   reducers: {
     setIsAuthChecked: (state, action: PayloadAction<boolean>) => {
       state.isAuthChecked = action.payload;

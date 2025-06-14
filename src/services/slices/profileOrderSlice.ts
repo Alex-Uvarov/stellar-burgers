@@ -8,7 +8,7 @@ export type TProfileOrderState = {
   error: null | string | undefined;
 };
 
-export const initialState: TProfileOrderState = {
+export const profileOrderInitialState: TProfileOrderState = {
   orders: [],
   loading: false,
   error: null
@@ -21,7 +21,7 @@ export const getProfileOrders = createAsyncThunk(
 
 export const profileOrdersSlice = createSlice({
   name: 'profileOrders',
-  initialState,
+  initialState: profileOrderInitialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
